@@ -1,18 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.2.2"
-    id("io.spring.dependency-management") version "1.1.4"
-    kotlin("jvm") version "1.9.22"
-    kotlin("plugin.spring") version "1.9.22"
-    kotlin("plugin.jpa") version "1.9.22"
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("plugin.jpa")
 }
 
-group = "com.fcfs"
-version = "0.0.1-SNAPSHOT"
+val projectGroup: String by project
+val applicationVersion: String by project
+
+group = projectGroup
+version = applicationVersion
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.valueOf("VERSION_${property("javaVersion")}")
 }
 
 repositories {
@@ -35,10 +38,16 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+        jvmTarget = "${project.property("javaVersion")}"
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.MappedSuperclass")
 }
