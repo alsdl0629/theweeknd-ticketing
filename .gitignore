@@ -44,3 +44,10 @@ out/
 
 ### rest docs ###
 /src/main/resources/static/docs/
+
+### application.yml ###
+/src/main/resources/application-local.yml
+/src/main/resources/application-test.yml
+
+### .ENV ###
+.env
